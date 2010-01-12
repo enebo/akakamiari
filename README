@@ -1,0 +1,38 @@
+Purpose of this project: 
+  Seamless integration between Rake and Ant environments.
+
+Quick Start:
+  To run examples cd into them and do a command-line like:
+
+  ANT_HOME=/opt/local/share/java/apache-ant jruby -I../lib simple_compile.rb 
+
+  In time the detectedion of ANT_HOME will be magic (or shipped) and also
+  the examples will also contain
+
+More info:
+1. Allow Rakefiles to call ant tasks
+    ant.java(:classname => "org.hsqldb.util.DatabaseManager", :fork => "yes") do
+      classpath :refid => "project.class.path"
+      arg :value => "-driver"
+      arg :value => "org.hsqldb.jdbcDriver"
+      arg :value => "-url"
+      arg :value => "jdbc:hsqldb:#{data_dir}/music"
+      arg :value => "-user"
+      arg :value => "sa"
+    end
+
+2. Allow Rakefiles to be executed from ant.  This will be a simple Ant Task 
+   along the lines of: '<rake_import file="Rakefile"/>'.  A second task may
+   be '<rake file="Rakefile"/>'.  
+
+   In the case of rake_import we are merely loading the tasks defined in the 
+   Rakefile but we will not be calling any task explicitly.  Any tasks 
+   encountered will be registered as ant tasks in ant's dependency graph.
+
+   The rake task will just execute the Rakefile like you were calling it
+   from the command-line.
+
+3. The same as number 2, but the other direction:
+   ant_import 'build.xml'
+   ant 'build'xml'
+
