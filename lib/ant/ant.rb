@@ -55,7 +55,7 @@ class Ant
     unless element
       # Not registered in ant's type registry for this project (nested el?)
       unless @helper.get_definition(name)
-        puts "Adding #{name} -> #{clazz.inspect}"
+        @project.log "Adding #{name} -> #{clazz.inspect}", 5
         @helper.add_data_type_definition(name, clazz)
       end
 

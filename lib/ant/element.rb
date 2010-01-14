@@ -22,11 +22,11 @@ class Element
     define_nested_elements element
     code.arity==1 ? code[element] : element.instance_eval(&code) if block_given?
     if parent.respond_to? :get_owning_target # Task
-      puts "Adding #{element.component_name} to #{parent.component_name}"
+      @ant.project.log "Adding #{name} to #{parent.component_name}", 5
       parent.add_child element
       parent.runtime_configurable_wrapper.add_child element.runtime_configurable_wrapper
     else # Target
-      puts "Executing #{name}"
+      @ant.project.log "Executing #{name}", 5
       element.maybe_configure
       element.execute
     end
@@ -48,7 +48,7 @@ class Element
 
   # This also subsumes configureId to only have to traverse args once
   def assign_attributes(instance, args)
-    puts "instance.task_name #{instance.task_name} #{name}"
+    @ant.project.log "instance.task_name #{instance.task_name} #{name}", 5
     wrapper = org.apache.tools.ant.RuntimeConfigurable.new instance, instance.task_name
     args.each do |key, value|
       # FIXME: Infinite recursion and only single expression expansion
