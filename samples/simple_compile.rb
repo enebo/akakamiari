@@ -28,4 +28,5 @@ Ant.new(:output_level => output_level) do
       pathelement :location => "${src.dir}"
     end
   end
+  jar :destfile => "simple_compile.jar", :basedir => build_dir
 end
