@@ -18,6 +18,7 @@ class Ant
   attr_reader :project
 
   def initialize(options={}, &block)
+    @options = options
     @project = create_project options
     initialize_elements
     @default = Target.new # Add generic target until this gets connected
@@ -73,5 +74,9 @@ class Ant
         element.call(@default, *a, &b)
       end
     end
+  end
+
+  def debug?
+    @options[:output_level] && @options[:output_level] > 3
   end
 end
