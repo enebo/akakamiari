@@ -91,8 +91,4 @@ class Ant
       end
     end
   end
-
-  def debug?
-    @options[:output_level] && @options[:output_level] > 3
-  end
 end
