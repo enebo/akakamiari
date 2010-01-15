@@ -1,7 +1,7 @@
 def ant_task(*args, &block)
   @ant ||= Ant.new
-  task(*args) do |t|
-    @ant.add_target(t.name, &block)
-    @ant.execute_target(t.name)
+  task(*args) do |rake_task|
+    @ant.add_target(rake_task.name, &block)
+    @ant.execute_target(rake_task.name)
   end
 end

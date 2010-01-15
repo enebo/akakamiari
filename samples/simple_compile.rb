@@ -22,11 +22,13 @@ Ant.new(:output_level => output_level) do
   echo :message => "BUILD DIR IS: ${build.dir}"
 
   mkdir :dir => build_dir
+
   javac(:destdir => build_dir) do
     classpath :refid => "project.class.path"
     src do
       pathelement :location => "${src.dir}"
     end
   end
+
   jar :destfile => "simple_compile.jar", :basedir => build_dir
 end

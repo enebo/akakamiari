@@ -41,10 +41,10 @@ class Ant
 
   def add_target(name, &block)
     unless @project.targets.include?(name)
-      @current_target = Target.new.tap do |t|
-        t.name = name
-        t.project = @project
-        @project.add_target(t)
+      @current_target = Target.new.tap do |target|
+        target.name = name
+        target.project = @project
+        @project.add_target(target)
       end
       block.arity == 1 ? block[self] : instance_eval(&block) if block_given?
     end
