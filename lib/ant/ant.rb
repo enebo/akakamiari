@@ -28,6 +28,9 @@ class Ant
   end
 
   def create_project(options)
+    # If we are calling into a rakefile from ant then we already have a project to use
+    return $project if $project
+
     Project.new.tap do |p|
       p.init
       p.add_build_listener(DefaultLogger.new.tap do |log|
