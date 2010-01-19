@@ -1,6 +1,9 @@
 package org.jruby.ant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.jruby.embed.ScriptingContainer;
@@ -11,7 +14,16 @@ public class Rake extends Task {
 
     @Override
     public void execute() throws BuildException {
-        if (filename == null) filename = "Rakefile";         // Look for Rakefile if none specified.
+        List args = new ArrayList();
+
+        if (filename != null) {
+            args.add("-f");
+            args.add(filename);
+        }
+
+        if (taskname != null) {
+            args.add(taskname);
+        }
 
         System.setProperty("jruby.native.enabled", "false"); // Problem with cl w/ jnr + jffi
         ScriptingContainer container = new ScriptingContainer();
@@ -21,11 +33,11 @@ public class Rake extends Task {
         container.runScriptlet("require 'ant/tasks/rake'");
         container.put("$project", getProject());             // set project so jruby ant lib gets it
 
-        Object rakeInstance = container.runScriptlet("RakeWrapper.new");
-        if (taskname == null) {
-            container.callMethod(rakeInstance, "execute", filename);
-        } else {
-            container.callMethod(rakeInstance, "execute", filename, taskname);
+        try {
+            Object rakeInstance = container.runScriptlet("RakeWrapper.new");
+            container.callMethod(rakeInstance, "execute", args.toArray(new Object[args.size()]));
+        } catch (Exception e) {
+            throw new BuildException("Build failed: " + e.getMessage(), e);
         }
     }
 
