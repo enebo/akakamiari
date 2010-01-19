@@ -20,4 +20,7 @@ class RakeWrapper
   def invoke_task(task)
     Rake.application[task].invoke
   end
+
+  def import(filename)
+  end
 end
