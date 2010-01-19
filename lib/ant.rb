@@ -1,25 +1,25 @@
 require 'java'
 
-def get_from_ant
-  IO.popen("ant -diagnostics") do |diag| 
-    home = diag.readlines.grep(/ant.home/).first.sub('ant.home: ', '').chomp
-    return File.join(home, "lib") if home
+class Ant
+  def self.get_from_ant
+    IO.popen("ant -diagnostics") do |diag|
+      home = diag.readlines.grep(/ant.home/).first.sub('ant.home: ', '').chomp
+      return home if home
+    end
+    nil
   end
-  nil
-end
 
-def locate_ant_home
-  if ENV['ANT_HOME'] 
-    home = File.join(ENV['ANT_HOME'], 'lib')
-    return home if File.exist? home
+  def self.locate_ant_home
+    return ENV['ANT_HOME'] if ENV['ANT_HOME'] && File.exist?(ENV['ANT_HOME'])
+    get_from_ant
   end
-  get_from_ant
+  
+  ANT_HOME = locate_ant_home
 end
-
-file = locate_ant_home
 
 # ant-launcher.jar is required because we use Project.init()
-$CLASSPATH << File.join(file, 'ant.jar') << File.join(file, 'ant-launcher.jar')
+$CLASSPATH << File.join(Ant::ANT_HOME, 'lib', 'ant.jar')
+$CLASSPATH << File.join(Ant::ANT_HOME, 'lib', 'ant-launcher.jar')
 
 require 'ant/ant'
 require 'ant/rake' if defined?(::Rake)
