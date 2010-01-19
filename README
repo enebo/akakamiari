@@ -2,12 +2,26 @@ Purpose of this project:
   Seamless integration between Rake and Ant environments.
 
 Quick Start:
-  To run examples cd into them and do a command-line like:
+  To run examples cd into samples and do a command-line like:
 
-  ANT_HOME=/opt/local/share/java/apache-ant jruby -I../lib simple_compile.rb 
+  jruby -I../lib simple_compile.rb 
 
-  In time the detectedion of ANT_HOME will be magic (or shipped) and also
-  the examples will also contain
+  Also the top-level Rakefile also uses these features to build the
+  ant tasks so just running 'jruby -S rake' will use the ant features.
+
+  Lastly, if you want to play with the <rake/> task, you can run ant
+  itself in the project directory:
+
+  CLASSPATH=lib/jruby-complete.jar ant call-rakefile-setup
+  CLASSPATH=lib/jruby-complete.jar ant call-rakefile
+
+  The first example calls a low-level task in the Rakefile called setup.
+  The second example calls default which will end up calling compile.  This
+  example is a little more trippy than the others since it is actually using
+  ant tasks to run javac.
+
+  As should be apparent in the previous examples, you need a copy of jruby-
+  complete.jar to run these targets.  Put it into the project lib dir.
 
 More info:
 1. Allow Rakefiles to call ant tasks
@@ -21,16 +35,25 @@ More info:
       arg :value => "sa"
     end
 
-2. Allow Rakefiles to be executed from ant.  This will be a simple Ant Task 
-   along the lines of: '<rake_import file="Rakefile"/>'.  A second task may
-   be '<rake file="Rakefile"/>'.  
+2. Allow Rakefiles to be executed from ant.  The first task is merely
+   a callout task:
 
-   In the case of rake_import we are merely loading the tasks defined in the 
-   Rakefile but we will not be calling any task explicitly.  Any tasks 
-   encountered will be registered as ant tasks in ant's dependency graph.
+   <rake/>
+   <rake file="Rakefile"/>
+   <rake file="Rakefile" task="compile"/>
 
-   The rake task will just execute the Rakefile like you were calling it
-   from the command-line.
+   This just runs a rakefile and executes a Rake task.  If you omit the optional
+   parameters then it will use the file 'Rakefile' and the task 'default'.
+
+   [NOT DONE YET]
+   The second task allows you to import all your rake tasks as ant targets.
+   This allows you to mix and match between ant targets and rake tasks using
+   ants target dependency management:
+
+   <rake_import file="Rakefile"/>
+
+   If your ant build.xml has compile and it depends on setup and setup is
+   defined in your Rakefile then compile will call setup as a dependency.
 
 3. The same as number 2, but the other direction:
    ant_import 'build.xml'
