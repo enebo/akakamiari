@@ -37,7 +37,7 @@ class Ant
         log.output_print_stream = java.lang.System.out
         log.error_print_stream = java.lang.System.err
         log.emacs_mode = true
-        log.message_output_level = options[:output_level] || 1
+        log.message_output_level = options[:output_level] || 2
       end)
     end
   end
