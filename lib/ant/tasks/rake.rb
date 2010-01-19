@@ -18,7 +18,6 @@ class RakeWrapper
   end
 
   def invoke_task(task)
-    application = load_tasks
-    application[task].invoke
+    Rake.application[task].invoke
   end
 end
