@@ -1,2 +1,4 @@
 samples/java_build
 samples/*.jar
+build
+dist
