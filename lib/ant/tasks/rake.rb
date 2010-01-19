@@ -9,7 +9,7 @@ class RakeWrapper
     Dir.chdir(File.dirname(filename))
     load File.expand_path(filename)
     top_level_tasks = application.top_level_tasks
-    top_level_tasks.delete_at 0 unless tasks.empty?
+    top_level_tasks.clear unless tasks.empty?
     tasks.each { |task| top_level_tasks << task }
     puts "TASKS = #{top_level_tasks}"
     application.top_level
