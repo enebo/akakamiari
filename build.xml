@@ -10,16 +10,17 @@
 <project name="akakamiari" default="default" basedir=".">
     <description>Builds, tests, and runs the project akakamiari.</description>
 
-    <target name="call-rakefile">
-        <taskdef name="rake" classpath="build/classes" classname="org.jruby.ant.Rake"/>
+    <target name="call-rakefile" depends="load-rake-task">
         <rake/>
     </target>
 
-    <target name="call-rakefile-setup">
-        <taskdef name="rake" classpath="build/classes" classname="org.jruby.ant.Rake"/>
+    <target name="call-rakefile-setup" depends="load-rake-task">
         <rake task="setup"/>
     </target>
 
+    <target name="load-rake-task">
+        <taskdef name="rake" classpath="build/classes" classname="org.jruby.ant.Rake"/>
+    </target>
 
     <import file="nbproject/build-impl.xml"/>
     <!--
