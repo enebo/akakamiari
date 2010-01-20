@@ -21,6 +21,11 @@ public class RakeTaskBase extends Task {
         this.filename = filename;
     }
 
+    @Override
+    public void execute() throws BuildException {
+        container.put("$project", getProject());             // set project so jruby ant lib gets it
+    }
+
     protected void acquireRakeReference() {
         System.setProperty("jruby.native.enabled", "false"); // Problem with cl w/ jnr + jffi
         container = new ScriptingContainer();
@@ -28,7 +33,6 @@ public class RakeTaskBase extends Task {
         // FIXME: This needs to be replaced by something which does not assume CWD
         container.setLoadPaths(Arrays.asList("lib"));
         container.runScriptlet("require 'ant/tasks/raketasks'");
-        container.put("$project", getProject());             // set project so jruby ant lib gets it
 
         rakeWrapper = container.runScriptlet("RakeWrapper.new");
     }

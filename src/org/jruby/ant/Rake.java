@@ -8,6 +8,7 @@ public class Rake extends RakeTaskBase {
 
     @Override
     public void execute() throws BuildException {
+        super.execute();
         List args = handleFilenameArgument();
 
         if (taskname != null) args.add(taskname);
