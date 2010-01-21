@@ -1,5 +1,6 @@
 require 'java'
 require 'ant/element'
+require 'ant/task'
 
 java_import org.apache.tools.ant.ComponentHelper
 java_import org.apache.tools.ant.DefaultLogger
@@ -42,15 +43,9 @@ class Ant
     end
   end
 
-  def add_target(name, &block)
-    unless @project.targets.include?(name)
-      @current_target = Target.new.tap do |target|
-        target.name = name
-        target.project = @project
-        @project.add_target(target)
-      end
-      block.arity == 1 ? block[self] : instance_eval(&block) if block_given?
-    end
+  # Add a rake as an ant target
+  def add_target(task)
+    @project.add_target RakeTarget.new(project, task)
   end
 
   def execute_target(name)

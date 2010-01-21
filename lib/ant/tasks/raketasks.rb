@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rake'
+require 'ant'
 
 class RakeWrapper
   def load_tasks(*args)
@@ -22,7 +23,7 @@ class RakeWrapper
   end
 
   def import(*args)
-    application = load_tasks(*args)
-    application
+    ant = Ant.new
+    load_tasks(*args).tasks.each { |rake_task| ant.add_target rake_task }
   end
 end
