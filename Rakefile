@@ -6,8 +6,6 @@ require 'ant'
 
 JAVA_CLASSES_DIR = 'build/classes'
 
-$ant = Ant.new
-
 CLEAN.include '**/*~', 'samples/java_build/*', 'build/*'
 
 task :default => :compile do
@@ -16,7 +14,7 @@ end
 
 task :compile => :setup do
   puts "compile_task executing"
-  $ant.javac :srcdir => 'src', :destdir => JAVA_CLASSES_DIR do
+  ant.javac :srcdir => 'src', :destdir => JAVA_CLASSES_DIR do
     classpath do
       pathelement :location => File.join(Ant::ANT_HOME, 'lib', 'ant.jar')
       pathelement :location => File.join(LIB_DIR, 'jruby-complete.jar')
