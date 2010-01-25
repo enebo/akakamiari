@@ -7,10 +7,10 @@ class Ant
   class RakeTarget < Target
     ALREADY_DEFINED_PREFIX = "rake_"
     
-    def initialize(project, rake_task)
+    def initialize(ant, rake_task)
       super()
-      self.project = project
-      self.name = generate_unique_target_name rake_task.name
+      set_project ant.project
+      set_name generate_unique_target_name rake_task.name
 
       rake_task.prerequisites.each { |prereq| add_dependency prereq }
 
