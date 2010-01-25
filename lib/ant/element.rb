@@ -37,19 +37,13 @@ class Element
     UnknownElement.new(@name).tap do |e|
       e.project = @ant.project
       e.task_name = @name
-
-#       if parent.respond_to? :get_owning_target # Task
-#         e.owning_target = parent.get_owning_target
-#       else
-#         e.owning_target = parent
-#       end
     end
   end
 
   # This also subsumes configureId to only have to traverse args once
   def assign_attributes(instance, args)
     @ant.project.log "instance.task_name #{instance.task_name} #{name}", 5
-    wrapper = org.apache.tools.ant.RuntimeConfigurable.new instance, instance.task_name
+    wrapper = RuntimeConfigurable.new instance, instance.task_name
     args.each do |key, value|
       # FIXME: Infinite recursion and only single expression expansion
       while value =~ /\$\{([^\}]+)\}/
