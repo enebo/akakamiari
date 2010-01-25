@@ -3,7 +3,7 @@ require 'ant'
 # The lower you set this the less ant internal debugging output you will see..
 output_level = 5
 
-Ant.new(:output_level => output_level) do
+ant(:output_level => output_level) do
   # Regular Ruby variable interact fine
   build_dir = "java_build"
 
