@@ -1,0 +1,14 @@
+directory './make_me'
+
+task :should_not_run do
+  puts "We should not see this"
+end
+
+task :its_in_rake => [:setup, :its_in_ant]  do
+  puts "it's in Rake"
+end
+
+task :setup => './make_me' do
+  puts "setup in Rake"
+end
+

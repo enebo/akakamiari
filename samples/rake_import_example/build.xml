@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="akakamiari" default="top-level" basedir=".">
+    <description>Builds, tests, and runs the project akakamiari.</description>
+
+    <taskdef name="rakeimport" classpath="../../build/classes" 
+             classname="org.jruby.ant.RakeImport"/>
+    <rakeimport/>
+
+    <target name="top-level" depends="its_in_rake">
+    </target>
+
+    <target name="its_in_ant">
+      <echo message="ant: its_in_ant"/>
+    </target>
+</project>
