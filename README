@@ -45,7 +45,6 @@ More info:
    This just runs a rakefile and executes a Rake task.  If you omit the optional
    parameters then it will use the file 'Rakefile' and the task 'default'.
 
-   [NOT DONE YET]
    The second task allows you to import all your rake tasks as ant targets.
    This allows you to mix and match between ant targets and rake tasks using
    ants target dependency management:
