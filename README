@@ -55,6 +55,17 @@ More info:
    defined in your Rakefile then compile will call setup as a dependency.
 
 3. The same as number 2, but the other direction:
-   ant_import 'build.xml'
-   ant 'build'xml'
 
+   Invoke ant:
+
+   ant '-f build.xml my_target'
+
+   This just executes ant as a command.  You can also pass in an array if
+   you so desire:
+
+   args = ['-f', 'my_build.xml', 'my_target1']
+   ant args
+
+   Import ant targets into rake:
+
+   ant_import 'build.xml'

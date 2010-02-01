@@ -11,6 +11,7 @@
     <description>Builds, tests, and runs the project akakamiari.</description>
 
     <target name="call-rakefile" depends="load-rake-task">
+        <echo message="in call-rakefile"/>
         <rake/>
     </target>
 
@@ -19,6 +20,7 @@
     </target>
 
     <target name="load-rake-task">
+        <echo message="in load-rake-task"/>
         <taskdef name="rake" classpath="build/classes" classname="org.jruby.ant.Rake"/>
     </target>
 

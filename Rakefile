@@ -22,6 +22,18 @@ task :compile => :setup do
   end
 end
 
+task :crazy do
+  ant 'call-rakefile'
+end
+
+task :ant_import do
+  ant_import 
+end
+
+task :ant_import_ant_default => [:ant_import, :ant_default] do
+  puts "Just executed ant's default"
+end
+
 task :setup do
   puts "setup_task_executing"
   mkdir_p JAVA_CLASSES_DIR

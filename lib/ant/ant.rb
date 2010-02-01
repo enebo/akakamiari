@@ -5,6 +5,7 @@ require 'ant/target'
 java_import org.apache.tools.ant.ComponentHelper
 java_import org.apache.tools.ant.DefaultLogger
 java_import org.apache.tools.ant.Project
+java_import org.apache.tools.ant.ProjectHelper
 java_import org.apache.tools.ant.Target
 
 class Ant
@@ -78,17 +79,48 @@ class Ant
 
   class << self
     def ant(options={}, &code)
-      @ant ||= Ant.new options
-      code.arity==1 ? code[@ant] : @ant.instance_eval(&code) if block_given?
-      @ant
+      if options.respond_to? :to_hash
+        @ant ||= Ant.new options.to_hash
+        code.arity==1 ? code[@ant] : @ant.instance_eval(&code) if block_given?
+        @ant
+      else
+        options = options.join(" ") if options.respond_to? :to_ary
+        sh "ant #{options.to_s}"  # FIXME: Make this more secure if using array form
+      end
     end
   end
 end
 
+# This method has three different uses:
+#
+# 1. Call an ant task or type directly:
+#      task :compile do # Rake task
+#        ant.javac { }  # Look I am calling an ant task
+#      end
+# 2. Provide a block to provide an impromptu ant session
+#      ant do
+#        javac {}       # Everything executes as if in an executing ant target
+#      end
+# 3. Provide arguments to execute ant as it's own build
+#      ant '-f my_build.xml my_target1'
+#
+#      Additionally this may be passed in array format if you are worried about injection:
+#
+#      args = ['-f', 'my_build.xml', 'my_target1']
+#      ant args
+#
 def ant(*args, &block)
   Ant.ant(*args, &block)
 end
 
 def ant_import(filename = 'build.xml')
-  # FIXME: Implement this
+  ant = Ant.ant
+
+  ProjectHelper.configure_project ant.project, java.io.File.new(filename)
+
+  ant.project.targets.each do |target_name, target|
+    name = Rake.application.lookup(target_name) ? "ant_" + target_name : target_name
+
+    task(name) { target.project.execute_target(target_name) }
+  end
 end
